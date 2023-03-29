@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArmadillosManager", "ArmadillosManager\ArmadillosManager.csproj", "{0697B01F-D551-492A-95DB-8343E0EBC875}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0697B01F-D551-492A-95DB-8343E0EBC875}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0697B01F-D551-492A-95DB-8343E0EBC875}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0697B01F-D551-492A-95DB-8343E0EBC875}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0697B01F-D551-492A-95DB-8343E0EBC875}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6A8CCDBD-7DE4-4B5F-9C18-D16D5E968E38}
+	EndGlobalSection
+EndGlobal

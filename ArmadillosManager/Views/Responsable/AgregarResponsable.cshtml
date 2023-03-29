@@ -1,0 +1,63 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model ArmadillosManager.Models.ViewModels.AgregarResponsableViewModel
+@{
+    Layout = "_Layout";
+}
+<body>
+
+    <!--Parte de Arriba-->
+    <h1>Gestion de Responsables</h1>
+    <hr>
+
+    <!--Info-->
+    <h2>Agregando Responsable</h2>
+    <hr>
+
+
+    <form method="post" action="~/Responsable/AgregarResponsable">
+        <h3>Nombre</h3>
+        <input type="text" id="txtNombre" required="required" asp-for="Responsable.Nombre">
+        <hr>
+        <h3>Correo</h3>
+        <input type="text" required="required" id="txtCorreo" asp-for="Responsable.Correo">
+        <h3>RFC</h3>
+        <input type="text" required="required" id="txtRfc" asp-for="Responsable.Rfc">
+        <h3>telefono</h3>
+        <input type="tel" required="required" id="txtTelefono" asp-for="Responsable.Telefono">
+        <h3>Domicilio</h3>
+        <input type="text" required="required" id="txtCorreo" asp-for="Responsable.Direccion">
+        <h3>Contraseña????</h3>
+        <input type="password" required="required" id="txtCorreo" asp-for="Responsable.Contraseña">
+
+        <p id="error">
+            @Html.ValidationSummary()
+        </p>
+        <input href="~/GestionarResponsable" type="submit" value="Enviar" />
+        <input href="~/" type="button" value="Cancelar" formnovalidate="formnovalidate" />
+    </form>
+
+    <hr>
+
+    <h2>Jugadores</h2>
+    <table>
+        <tr>
+            <th>Jugador</th>
+            <th>Categoria</th>
+            <th>Liga</th>
+            <th>*</th>
+        </tr>
+        @foreach (var item in Model.Jugadores)
+        {
+            <tr>
+                <td>
+                    <h4>@item.Nombre</h4>
+                </td>
+                <td>@item.CategoriaNavigation.Categoria1</td>
+                <td>@item.LigaNavigation.Liga1</td>
+                <td><Button>Gestionar</Button></td>
+            </tr>
+        }
+    </table>
+    <hr>
+
+</body>

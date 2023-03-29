@@ -1,0 +1,58 @@
+﻿@model ArmadillosManager.Models.ViewModels.GestionarJugadoresViewModels
+
+@{
+    Layout = "_Layout";
+}
+<body>
+
+    <!--Parte de Arriba-->
+    <h1>Gestion de Jugadores</h1>
+    <nav>
+        <a>Todos</a>
+        <a>Liga Infantil</a>
+        <a>Liga Juvenil</a>
+        <a href="~/Responsable/AgregarJugador">
+            <button>Nuevo Jugador</button>
+        </a>
+    </nav>
+    <hr>
+
+    <!--Filtros-->
+    <input placeholder="Buscar" />
+    <h3>Mostrar por Categoria</h3>
+    <select>
+        <option>Todos</option>
+        <option>Categoria 1</option>
+        <option>Categoria 2</option>
+        <option>Categoria 3</option>
+    </select>
+
+    <!--Tabla-->
+    <h2>Jugadores Registrados</h2>
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Jugador</th>
+            <th>Categoria</th>
+            <th>Responsable</th>
+            <th>*</th>
+        </tr>
+        @foreach (var item in Model.Jugadores)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>
+                    <h4>@item.Nombre</h4>
+                    <ul>
+                        <li>@item.Direccion</li>
+                        <li>@item.Telefono</li>
+                    </ul>
+                </td>
+                <td>@item.CategoriaNavigation.Categoria1</td>
+                <td>@item.IdResponsableNavigation.Nombre</td>
+                <td><Button>Gestionar</Button></td>
+            </tr>
+        }
+    </table>
+
+</body>
