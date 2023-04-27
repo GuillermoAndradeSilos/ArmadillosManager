@@ -5,43 +5,63 @@
 <body>
 
     <!--Parte de Arriba-->
-    <h1>Gestion de Responsables</h1>
-    <nav>
-        <a href="~/Responsable/AgregarResponsable">
-            <button>Nuevo Responsable</button>
-        </a>
-    </nav>
-    <hr>
+    <div class="contenido">
+        <div class="header">
+            <!--Parte de Arriba-->
+            <h1>Gestion de Responsables</h1>
+            <nav class="navresponsable">
+                <form action="~/Responsable/AgregarResponsable">
+                    <button class="addbtn">Nuevo Responsable</button>
+                </form>
+            </nav>
+        </div>
+        <div class="filtros">
+            <!--Filtros-->
+            <input class="textboxR" placeholder="Buscar"></input>
+        </div>
+        <div class="tablacontainer">
+            <!--Tabla-->
+            <h2>Responsables Registrados</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Responsable</th>
+                        <th>RFC</th>
+                        <th>Correo Electronico</th>
+                        <th>*</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Responsables)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>
+                                <h6>@item.Nombre</h6>
+                                <ul>
+                                    <li>@item.Direccion</li>
+                                    <li>@item.Telefono</li>
+                                </ul>
+                            </td>
+                            <td>@item.Rfc</td>
+                            <td>@item.Correo</td>
+                            <td>
+                                <div class="gestionDad">
+                                    <div class="mascara">
+                                        <i class="fa-sharp fa-solid fa-ellipsis-vertical"></i>
+                                    </div>
+                                    <div class="opcionesGestion">
+                                        <a href="~/Responsable/EditarResponsable/@(item.Id)"><i class="fa-solid fa-eye"></i></a>
+                                        <i class="fa-sharp fa-solid fa-trash"></i>
+                                    </div>
+                                </div>
 
-    <!--Filtros-->
-    <input placeholder="Buscar" />
-
-    <!--Tabla-->
-    <h2>Responsables Registrados</h2>
-    <table>
-        <tr>
-            <th>Id</th>
-            <th>Responsable</th>
-            <th>RFC</th>
-            <th>Correo Electronico</th>
-            <th>*</th>
-        </tr>
-        @foreach (var item in Model.Responsables)
-        {
-            <tr>
-                <td>@item.Id</td>
-                <td>
-                    <h6>@item.Nombre</h6>
-                    <ul>
-                        <li>@item.Direccion</li>
-                        <li>@item.Telefono</li>
-                    </ul>
-                </td>
-                <td>@item.Rfc</td>
-                <td>@item.Correo</td>
-                <td><Button>Gestionar</Button></td>
-            </tr>
-        }
-    </table>
-
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </body>

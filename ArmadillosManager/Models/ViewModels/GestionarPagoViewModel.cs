@@ -1,8 +1,9 @@
 ﻿namespace ArmadillosManager.Models.ViewModels
 {
-    public class GestionarResponsablesViewModel
+    //enum Estados { Pendiente, Pagado }
+    public class GestionarPagoViewModel
     {
-        public IEnumerable<Responsable> Responsables { get; set; } = null!;
+        public IEnumerable<Pago>? Pagos { get; set; }
         public Filtros? Filtros { get; set; }
         public IEnumerable<Categoria> Categorias { get; set; } = null!;
     }

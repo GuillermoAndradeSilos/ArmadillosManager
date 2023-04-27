@@ -1,58 +1,78 @@
 ﻿@model ArmadillosManager.Models.ViewModels.GestionarJugadoresViewModels
-
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = "_Layout";
 }
 <body>
+    <div class="contenido">
+        <form action="~/GestionarJugadores" method="post">
+            <div class="header">
+                <!--Parte de Arriba-->
+                <h1>Gestion de Jugadores</h1>
+                <nav>
+                    <div>
+                        <input type="submit" name="Filtros.Liga" asp-for="Filtros.Liga" value="Todos" />
+                        <input type="submit" name="Filtros.Liga" asp-for="Filtros.Liga" value="Infantil" />
+                        <input type="submit" name="Filtros.Liga" asp-for="Filtros.Liga" value="Juvenil" />
+                    </div>
+                    <a href="~/Responsable/AgregarJugador" class="addbtn">Nuevo Jugador</a>
+                </nav>
+            </div>
+            <div class="filtros">
+                <!--Filtros-->
+                <input class="textbox" placeholder="Buscar"></input>
+                <div class="contenedorfiltro">
+                    <h3>Mostrar por Categoria</h3>
+                    <select id="cmbCategoria" asp-for="Filtros.Categoria" asp-items="@(new SelectList(Model.Categorias,"IdCategoria","Categoria1"))"
+                            onchange="this.form.submit()">
+                        <option selected="selected" value="">Todos</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+        <div class="tablacontainer">
+            <!--Tabla-->
+            <h2>Jugadores Registrados</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Jugador</th>
+                        <th>Categoria</th>
+                        <th>Responsable</th>
+                        <th>*</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Jugadores)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>
+                                <h4>@item.Nombre</h4>
+                                <ul>
+                                    <li>@item.Direccion</li>
+                                    <li>@item.Telefono</li>
+                                </ul>
+                            </td>
+                            <td>@item.CategoriaNavigation.Categoria1</td>
+                            <td>@item.IdResponsableNavigation.Nombre</td>
+                            <td>
+                                <div class="gestionDad">
+                                    <div class="mascara">
+                                        <i class="fa-sharp fa-solid fa-ellipsis-vertical"></i>
+                                    </div>
+                                    <div class="opcionesGestion">
+                                        <i class="fa-sharp fa-solid fa-trash"></i>
+                                        <a href="~/Responsable/EditarJugador/@(item.Id)"><i class="fa-solid fa-eye"></i></a>
+                                    </div>
+                                </div>
 
-    <!--Parte de Arriba-->
-    <h1>Gestion de Jugadores</h1>
-    <nav>
-        <a>Todos</a>
-        <a>Liga Infantil</a>
-        <a>Liga Juvenil</a>
-        <a href="~/Responsable/AgregarJugador">
-            <button>Nuevo Jugador</button>
-        </a>
-    </nav>
-    <hr>
-
-    <!--Filtros-->
-    <input placeholder="Buscar" />
-    <h3>Mostrar por Categoria</h3>
-    <select>
-        <option>Todos</option>
-        <option>Categoria 1</option>
-        <option>Categoria 2</option>
-        <option>Categoria 3</option>
-    </select>
-
-    <!--Tabla-->
-    <h2>Jugadores Registrados</h2>
-    <table>
-        <tr>
-            <th>Id</th>
-            <th>Jugador</th>
-            <th>Categoria</th>
-            <th>Responsable</th>
-            <th>*</th>
-        </tr>
-        @foreach (var item in Model.Jugadores)
-        {
-            <tr>
-                <td>@item.Id</td>
-                <td>
-                    <h4>@item.Nombre</h4>
-                    <ul>
-                        <li>@item.Direccion</li>
-                        <li>@item.Telefono</li>
-                    </ul>
-                </td>
-                <td>@item.CategoriaNavigation.Categoria1</td>
-                <td>@item.IdResponsableNavigation.Nombre</td>
-                <td><Button>Gestionar</Button></td>
-            </tr>
-        }
-    </table>
-
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </body>

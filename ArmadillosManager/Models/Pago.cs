@@ -15,9 +15,15 @@ public partial class Pago
 
     public decimal MontoRestante { get; set; }
 
+    public int IdTemporada { get; set; }
+
+    public string? Estado { get; set; }
+
     public virtual Jugador IdJugadorNavigation { get; set; } = null!;
 
     public virtual Responsable IdResponsableNavigation { get; set; } = null!;
+
+    public virtual Temporada IdTemporadaNavigation { get; set; } = null!;
 
     public virtual ICollection<Movimientos> Movimientos { get; } = new List<Movimientos>();
 }

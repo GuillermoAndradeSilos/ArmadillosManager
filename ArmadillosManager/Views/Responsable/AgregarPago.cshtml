@@ -1,0 +1,55 @@
+﻿@{
+    Layout = "_Layout";
+}
+<!--Parte de Arriba-->
+<h1>Informe de Pagos</h1>
+<nav>
+    <a>Todos</a>
+    <a>Liga Infantil</a>
+    <a>Liga Juvenil</a>
+</nav>
+<hr>
+
+<!--Filtros-->
+<input placeholder="Buscar" />
+<h3>Mostrar por Categoria</h3>
+<select>
+    <option>Todos</option>
+    <option>Categoria 1</option>
+    <option>Categoria 2</option>
+    <option>Categoria 3</option>
+</select>
+<h3>Mostrar por Estado</h3>
+<select>
+    <option>Todos</option>
+    <option>Pendiente</option>
+    <option>Pagado</option>
+</select>
+<button>Imprimir</button>
+
+<!--Tabla-->
+<h2>Estado de Pago de los Jugadores</h2>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Jugador</th>
+        <th>Categoria</th>
+        <th>Responsable</th>
+        <th>Estado</th>
+        <th>*</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>
+            <h6>Nombre de Jugador</h6>
+            <ul>
+                <li>Domicilio</li>
+                <li>telefono</li>
+            </ul>
+        </td>
+        <td>Categoria 1</td>
+        <td>Nombre de Responsable</td>
+        <td>Pendiente</td>
+        <td><Button>Gestionar</Button></td>
+    </tr>
+</table>

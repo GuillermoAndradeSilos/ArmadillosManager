@@ -16,7 +16,7 @@
         <div class="infocontainer">
             <h2>Datos del Responsable</h2>
             <div>
-                <form method="post" action="~/Responsable/AgregarResponsable">
+                <form method="post" action="~/EditarResponsable">
                     <h3>Nombre</h3>
                     <input type="text" id="txtNombre" required="required" asp-for="Responsable.Nombre">
                     <hr>
@@ -35,8 +35,8 @@
                         @Html.ValidationSummary()
                     </p>
                     <div class="btncontainer">
-                        <button href="~/GestionarResponsable" class="addbtn">Aceptar</button>
-                        <button formnovalidate href="~/" class="imprentbtn">
+                        <input type="submit" href="~/GestionarResponsable" class="addbtn" value="Aceptar" />
+                        <button formnovalidate href="~/GestionarResponsable" class="imprentbtn">
                             <i class="fa-sharp fa-solid fa-xmark"></i>
                         </button>
                     </div>
@@ -46,23 +46,23 @@
 
             @*<h2>Jugadores</h2>
             <table>
-                <tr>
-                    <th>Jugador</th>
-                    <th>Categoria</th>
-                    <th>Liga</th>
-                    <th>*</th>
-                </tr>
-                @foreach (var item in Model.Jugadores)
-                {
-                    <tr>
-                        <td>
-                            <h4>@item.Nombre</h4>
-                        </td>
-                        <td>@item.CategoriaNavigation.Categoria1</td>
-                        <td>@item.LigaNavigation.Liga1</td>
-                        <td><Button>Gestionar</Button></td>
-                    </tr>
-                }
+            <tr>
+            <th>Jugador</th>
+            <th>Categoria</th>
+            <th>Liga</th>
+            <th>*</th>
+            </tr>
+            @foreach (var item in Model.Jugadores)
+            {
+            <tr>
+            <td>
+            <h4>@item.Nombre</h4>
+            </td>
+            <td>@item.CategoriaNavigation.Categoria1</td>
+            <td>@item.LigaNavigation.Liga1</td>
+            <td><Button>Gestionar</Button></td>
+            </tr>
+            }
             </table>*@
         </div>
     </div>

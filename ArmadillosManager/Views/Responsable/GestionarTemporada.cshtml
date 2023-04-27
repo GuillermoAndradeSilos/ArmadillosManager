@@ -1,0 +1,91 @@
+﻿@model ArmadillosManager.Models.ViewModels.GestionarTemporadaViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_Layout";
+}
+<div class="contenido">
+    <div class="header">
+        <!--Parte de Arriba-->
+        <h1>Gestion de temporada</h1>
+        <nav>
+            <h2>Informacion de Temporada.</h2>
+        </nav>
+    </div>
+
+    <form method="post" action="~/Responsable/GestionarTemporada">
+        <!--Info-->
+        <div class="infocontainer">
+            <h2>Liga Infantil</h2>
+            <div>
+                <h3>Inicio de Temporada</h3>
+                <input type="date" id="txtInicioLigaInfantilFormateada" asp-for="InicioLigaInfantilFormateada" value="@Model.InicioLigaInfantilFormateada">
+                <h3>Final de Temporada</h3>
+                <input type="date" id="txtFinalLigaInfantilFormateada" asp-for="FinalLigaInfantilFormateada" value="@Model.FinalLigaInfantilFormateada">
+            </div>
+            <h2>Liga Juvenil</h2>
+            <div>
+                <h3>Inicio de Temporada</h3>
+                <input type="date" id="txtInicioLigaJuvenilFormateada" asp-for="InicioLigaJuvenilFormateada" value="@Model.InicioLigaJuvenilFormateada">
+                <h3>Final de Temporada</h3>
+                <input type="date" id="txtFinalLigaJuvenilFormateada" asp-for="FinalLigaJuvenilFormateada" value="@Model.FinalLigaJuvenilFormateada">
+            </div>
+        </div>
+
+        <nav>
+            <h2>Informacion de Costos</h2>
+        </nav>
+
+        <div class="infocontainer">
+            <h2>Temporada - Liga Infantil</h2>
+            <div>
+                <h3>Costo</h3>
+                <input type="number" id="txtTemporada.CostoTemporadaInfantil" asp-for="Temporada.CostoTemporadaInfantil" value="@Model.Temporada.CostoTemporadaInfantil">
+                <div class="divv">
+                    @*<div>
+                        <h3>Fecha de Corte</h3>
+                        <input type="date">
+                    </div>*@
+                </div>
+            </div>
+            <h2>Uniformes</h2>
+            <div>
+                <h3>Costo</h3>
+                <input id="txtTemporada.CostoUniformeInfantil" asp-for="Temporada.CostoUniformeInfantil" value="@Model.Temporada.CostoUniformeInfantil">
+                <div class="divv">
+                    <div>
+                        @*<h3>Fecha de Corte</h3>
+                        <input type="date">*@
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="infocontainer">
+            <h2>Temporada - Liga Juvenil</h2>
+            <div>
+                <h3>Costo</h3>
+                <input type="number" id="txtTemporada.CostoTemporadaJuvenil" asp-for="Temporada.CostoTemporadaJuvenil" value="@Model.Temporada.CostoTemporadaJuvenil">
+                <div class="divv">
+                    <div>
+                        @*<h3>Fecha de Corte</h3>
+                        <input type="date">*@
+                    </div>
+                </div>
+            </div>
+            <h2>Uniformes</h2>
+            <div>
+                <h3>Costo</h3>
+                <input id="txtTemporada.CostoUniformeJuvenil" asp-for="Temporada.CostoUniformeJuvenil" value="@Model.Temporada.CostoUniformeJuvenil">
+                <div class="divv">
+                    <div>
+                        @*<h3>Fecha de Corte</h3>
+                        <input type="date">*@
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="btncontainer">
+            <button href="~/" class="addbtn">Aceptar</button>
+        </div>
+    </form>
+</div>

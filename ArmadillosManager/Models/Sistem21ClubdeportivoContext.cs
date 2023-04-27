@@ -29,6 +29,7 @@ public partial class Sistem21ClubdeportivoContext : DbContext
 
     public virtual DbSet<Temporada> Temporada { get; set; }
 
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
@@ -130,9 +131,13 @@ public partial class Sistem21ClubdeportivoContext : DbContext
 
             entity.HasIndex(e => e.IdResponsable, "FkIdResposbale_idx");
 
+            entity.HasIndex(e => e.IdTemporada, "FkIdTemporada_idx");
+
             entity.Property(e => e.Id).HasColumnType("int(11)");
+            entity.Property(e => e.Estado).HasMaxLength(45);
             entity.Property(e => e.IdJugador).HasColumnType("int(11)");
             entity.Property(e => e.IdResponsable).HasColumnType("int(11)");
+            entity.Property(e => e.IdTemporada).HasColumnType("int(11)");
             entity.Property(e => e.MontoRestante).HasPrecision(10);
             entity.Property(e => e.MontoTotal).HasPrecision(10);
 
@@ -145,6 +150,11 @@ public partial class Sistem21ClubdeportivoContext : DbContext
                 .HasForeignKey(d => d.IdResponsable)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FkIdResposbale");
+
+            entity.HasOne(d => d.IdTemporadaNavigation).WithMany(p => p.Pago)
+                .HasForeignKey(d => d.IdTemporada)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FkIdTemporada");
         });
 
         modelBuilder.Entity<Responsable>(entity =>
@@ -171,8 +181,10 @@ public partial class Sistem21ClubdeportivoContext : DbContext
             entity.ToTable("temporada");
 
             entity.Property(e => e.Id).HasColumnType("int(11)");
-            entity.Property(e => e.CostoTemporada).HasPrecision(10);
-            entity.Property(e => e.CostoUniforme).HasPrecision(10);
+            entity.Property(e => e.CostoTemporadaInfantil).HasPrecision(10);
+            entity.Property(e => e.CostoTemporadaJuvenil).HasPrecision(10);
+            entity.Property(e => e.CostoUniformeInfantil).HasPrecision(10);
+            entity.Property(e => e.CostoUniformeJuvenil).HasPrecision(10);
         });
 
         OnModelCreatingPartial(modelBuilder);
