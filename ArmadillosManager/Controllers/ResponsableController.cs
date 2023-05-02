@@ -53,6 +53,7 @@ namespace ArmadillosManager.Controllers
             if (jugavm.Filtros?.Categoria != "Todos" && jugavm.Filtros?.Categoria != null)
                 vm = vm.Where(x => x.CategoriaNavigation.IdCategoria.ToString() == jugavm.Filtros.Categoria);
             v.Jugadores = vm;
+            v.Filtros=jugavm.Filtros;
             v.Categorias = context.Categoria.OrderBy(x => x.Categoria1);
             return View(v);
         }

@@ -6,6 +6,6 @@
         public IEnumerable<Categoria> Categorias { get; set; } = null!;
         public IEnumerable<Liga> Ligas { get; set; } = null!;
         public IEnumerable<Responsable> Responsables { get; set; } = null!;
-        public string RFC { get; set; }=null!;
+        public string? RFC { get; set; }
     }
 }
