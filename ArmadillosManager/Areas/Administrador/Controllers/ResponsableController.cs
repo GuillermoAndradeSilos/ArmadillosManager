@@ -1,12 +1,16 @@
 ﻿using ArmadillosManager.Models;
 using ArmadillosManager.Models.ViewModels;
 using ArmadillosManager.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
-namespace ArmadillosManager.Controllers
+namespace ArmadillosManager.Areas.Administrador.Controllers
 {
+    [Authorize(Roles = "Administrador")]
+    [Area("Administrador")]
     public class ResponsableController : Controller
     {
         private readonly Sistem21ClubdeportivoContext context;
@@ -17,7 +21,7 @@ namespace ArmadillosManager.Controllers
 
         public ResponsableController(Sistem21ClubdeportivoContext cx)
         {
-            this.context = cx;
+            context = cx;
             repositoryResponsable = new Repository<Responsable>(context);
             repositoryJugador = new Repository<Jugador>(context);
             repositoryTemporada = new Repository<Temporada>(context);
@@ -31,29 +35,27 @@ namespace ArmadillosManager.Controllers
             vm.Categorias = context.Categoria.OrderBy(x => x.Categoria1);
             return View(vm);
         }
-        [Route("/")]
-        [Route("/Index")]
         [Route("/GestionarJugadores")]
         public IActionResult GestionarJugadores(GestionarJugadoresViewModels jugavm)
         {
             GestionarJugadoresViewModels v = new GestionarJugadoresViewModels();
-            var vm = repositoryJugador.GetAll().Include(x => x.IdResponsableNavigation).Include(x => x.CategoriaNavigation).Include(x=>x.LigaNavigation)
+            var vm = repositoryJugador.GetAll().Include(x => x.IdResponsableNavigation).Include(x => x.CategoriaNavigation).Include(x => x.LigaNavigation)
                 .Select(x => new Jugador
-            {
-                CategoriaNavigation = x.CategoriaNavigation,
-                Direccion = x.Direccion,
-                Id = x.Id,
-                Nombre = x.Nombre,
-                Telefono = x.Telefono,
-                IdResponsableNavigation = x.IdResponsableNavigation,
-                LigaNavigation= x.LigaNavigation
-            });
+                {
+                    CategoriaNavigation = x.CategoriaNavigation,
+                    Direccion = x.Direccion,
+                    Id = x.Id,
+                    Nombre = x.Nombre,
+                    Telefono = x.Telefono,
+                    IdResponsableNavigation = x.IdResponsableNavigation,
+                    LigaNavigation = x.LigaNavigation
+                });
             if (jugavm.Filtros?.Liga != "Todos" && jugavm.Filtros?.Liga != null)
                 vm = vm.Where(x => x.LigaNavigation.Liga1 == jugavm.Filtros.Liga);
             if (jugavm.Filtros?.Categoria != "Todos" && jugavm.Filtros?.Categoria != null)
                 vm = vm.Where(x => x.CategoriaNavigation.IdCategoria.ToString() == jugavm.Filtros.Categoria);
             v.Jugadores = vm;
-            v.Filtros=jugavm.Filtros;
+            v.Filtros = jugavm.Filtros;
             v.Categorias = context.Categoria.OrderBy(x => x.Categoria1);
             return View(v);
         }
@@ -88,12 +90,14 @@ namespace ArmadillosManager.Controllers
             }
             return View(responsablevm);
         }
+        [HttpGet("/Responsable/AgregarJugador")]
         public IActionResult AgregarJugador()
         {
             AgregarJugadorViewModel vm = new AgregarJugadorViewModel();
             vm.Categorias = context.Categoria.OrderBy(x => x.Categoria1);
             vm.Ligas = context.Liga.OrderBy(x => x.Liga1);
             vm.Responsables = context.Responsable.OrderBy(x => x.Nombre);
+            vm.RFC = "";
             return View(vm);
         }
         [HttpPost]

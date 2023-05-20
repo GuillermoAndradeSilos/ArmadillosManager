@@ -14,4 +14,16 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.Mysql" Version="7.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Areas\Administrador\Views\Responsable\GestionarJugadores.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Administrador\Models\" />
+    <Folder Include="Areas\Responsables\Models\" />
+  </ItemGroup>
+
 </Project>

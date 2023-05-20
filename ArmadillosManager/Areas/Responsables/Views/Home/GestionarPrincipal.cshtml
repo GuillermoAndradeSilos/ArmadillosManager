@@ -1,0 +1,136 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model ArmadillosManager.Models.ViewModels.ResponsableViewModel
+@{
+    Layout = "_LayoutResponsable";
+}
+<body>
+    <header>
+        <!--<img> el texto de abajo es un logo-->
+        <p>ARMADILLOS</p>
+        <div class="divusuario">
+            <h2>Responsable</h2>
+            <i class="fa-sharp fa-solid fa-image-user"></i>
+        </div>
+    </header>
+
+
+    <div class="contenido">
+        <div class="header">
+            <!--Parte de Arriba-->
+            <h1>Hola, @Model.ResponsableInfo.Nombre</h1>
+        </div>
+
+        <!--Info-->
+        <div class="infocontainerResponsable">
+            <h2>Tu Informacion</h2>
+            <div>
+                <h4>@Model.ResponsableInfo.Nombre</h4>
+                <h4>@Model.ResponsableInfo.Direccion</h4>
+                <h4>@Model.ResponsableInfo.Telefono</h4>
+                <h4>@(Model.Jugadores.Count()) Jugadores</h4>
+            </div>
+        </div>
+
+        <div class="tablacontainer">
+            <!--Tabla-->
+            <h2>Jugadores</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jugador</th>
+                        <th>Categoria</th>
+                        <th>Estado</th>
+                        <th>*</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Jugadores)
+                    {
+                        <tr>
+                            <td>
+                                <h4>@item.Nombre</h4>
+                                <ul>
+                                    <li>@item.Direccion</li>
+                                    <li>@item.Telefono</li>
+                                </ul>
+                            </td>
+                            <td>@item.CategoriaNavigation.Categoria1</td>
+                            <td>Pendiente *Tengo que ver onde estaba esa opcion*</td>
+                            <td>
+                                <a href="/EditarJugador/Jugador/@(item.Id)"><i class="fa-solid fa-eye"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <hr>
+
+        <div class="filtros">
+            <!--Filtros-->
+            <input class="textbox" placeholder="Buscar" />
+            <div class="contenedorfiltro">
+                <h3>Mostrar por Jugador</h3>
+                <select>
+                    <option>Todos</option>
+                    <option>Jugador 1</option>
+                    <option>Jugador 2</option>
+                    <option>Jugador 3</option>
+                </select>
+            </div>
+            <hr>
+            <div class="contenedorfiltro">
+                <h3>Mostrar por Tipo</h3>
+                <select>
+                    <option>Todos</option>
+                    <option>Cargo</option>
+                    <option>Abono</option>
+                </select>
+            </div>
+
+            <div class="contenedorfiltro">
+                <!--Hay que hablar de esto-->
+                <h3>Buscar Fecha *Acuerdenme de hablar de esto*</h3>
+                <input type="date">
+            </div>
+        </div>
+
+        <div class="tablacontainer">
+            <!--Tabla-->
+            <h2>Movimientos</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jugador</th>
+                        <th>Categoria</th>
+                        <th>Tipo</th>
+                        <th>Cantidad</th>
+                        <th>*</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Movimientos)
+                    {
+                        <tr>
+                            <td>
+                                <h4>@item.JugadorHelp.Nombre</h4>
+                                <ul>
+                                    <li>@item.JugadorHelp.Direccion</li>
+                                    <li>@item.JugadorHelp.Telefono</li>
+                                </ul>
+                            </td>
+                            <td>Categoria 1</td>
+                            <td>@item.MovimientoHelp.Concepto</td>
+                            <td>@item.MovimientoHelp.Monto</td>
+                            <td>
+                                <!-- Aqui es el editar -->
+                                <i class="fa-sharp fa-solid fa-print"></i>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
