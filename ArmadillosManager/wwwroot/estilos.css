@@ -37,8 +37,13 @@ header h2
     color: white;
 }
 
+body {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+}
 
-body
+.bodyResp
 {
     padding-top: 10vh;
     height: 100%;
