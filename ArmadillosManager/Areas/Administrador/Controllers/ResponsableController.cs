@@ -33,6 +33,7 @@ namespace ArmadillosManager.Areas.Administrador.Controllers
             var datos = repositoryResponsable.GetAll().ToList();
             GestionarResponsablesViewModel vm = new GestionarResponsablesViewModel { Responsables = datos };
             vm.Categorias = context.Categoria.OrderBy(x => x.Categoria1);
+            ViewBag.Seleccion = 1;
             return View(vm);
         }
         [Route("/GestionarJugadores")]
@@ -57,6 +58,7 @@ namespace ArmadillosManager.Areas.Administrador.Controllers
             v.Jugadores = vm;
             v.Filtros = jugavm.Filtros;
             v.Categorias = context.Categoria.OrderBy(x => x.Categoria1);
+            ViewBag.Seleccion = 2;
             return View(v);
         }
         public IActionResult AgregarResponsable()
@@ -134,6 +136,7 @@ namespace ArmadillosManager.Areas.Administrador.Controllers
                 IdResponsableNavigation = x.IdResponsableNavigation
             });
             v.Categorias = context.Categoria.OrderBy(x => x.Categoria1);
+            ViewBag.Seleccion = 0;
             return View(v);
         }
         [HttpPost]
@@ -169,6 +172,7 @@ namespace ArmadillosManager.Areas.Administrador.Controllers
             vm.InicioLigaJuvenilFormateada = vm.Temporada.InicioLigaJuvenil.ToString("yyyy-MM-dd");
             vm.InicioLigaInfantilFormateada = vm.Temporada.InicioLigaInfantil.ToString("yyyy-MM-dd");
             vm.FinalLigaInfantilFormateada = vm.Temporada.FinalLigaInfantil.ToString("yyyy-MM-dd");
+            ViewBag.Seleccion = 3;
             return View(vm);
         }
         [HttpPost]

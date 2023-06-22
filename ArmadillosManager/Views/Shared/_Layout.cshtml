@@ -15,18 +15,57 @@
         <img />
         <img />
         <ul>
-            <li>
-                <a style="border-right: none;" href="~/GestionarPago">Pagos</a>
-            </li>
-            <li>
-                <a style="border-right: none;" href="~/GestionarResponsable">Responsables</a>
-            </li>
-            <li>
-                <a style="color: gold; font-weight: 500;" href="~/">Jugadores</a>
-            </li>
-            <li>
-                <a style="border-right: none;" href="~/GestionarTemporada">Temporada</a>
-            </li>
+            @*GestionarPago,GestionarResponsable,GestionarJugadores,GestionarTemporada
+            ViewBag.Seleccion
+            *@
+            @if (ViewBag.Seleccion == 0)
+            {
+                <li>
+                    <a style="color: gold; font-weight: 500;" href="~/GestionarPago">Pagos</a>
+                </li>
+            }
+            else
+            {
+                <li>
+                    <a style="border-right: none;" href="~/GestionarPago">Pagos</a>
+                </li>
+            }
+            @if (ViewBag.Seleccion == 1)
+            {
+                <li>
+                    <a style="color: gold; font-weight: 500;" href="~/GestionarResponsable">Responsables</a>
+                </li>
+            }
+            else
+            {
+                <li>
+                    <a style="border-right: none;" href="~/GestionarResponsable">Responsables</a>
+                </li>
+            }
+            @if (ViewBag.Seleccion == 2)
+            {
+                <li>
+                    <a style="color: gold; font-weight: 500;" href="~/GestionarJugadores">Jugadores</a>
+                </li>
+            }
+            else
+            {
+                <li>
+                    <a style="border-right: none;" href="~/GestionarJugadores">Jugadores</a>
+                </li>
+            }
+            @if (ViewBag.Seleccion == 3)
+            {
+                <li>
+                    <a style="color: gold; font-weight: 500;" href="~/GestionarTemporada">Temporada</a>
+                </li>
+            }
+            else
+            {
+                <li>
+                    <a style="border-right: none;" href="~/GestionarTemporada">Temporada</a>
+                </li>
+            }
         </ul>
     </div>
     @RenderBody()
