@@ -21,6 +21,7 @@ namespace ArmadillosManager.Controllers
         {
             return View();
         }
+        //Implementar Javascript, agregarjugador, filtros,
         [HttpPost]
         public IActionResult IniciarSesion(Login login)
         {

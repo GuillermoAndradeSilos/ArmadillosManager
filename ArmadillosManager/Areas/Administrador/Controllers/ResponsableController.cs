@@ -102,7 +102,7 @@ namespace ArmadillosManager.Areas.Administrador.Controllers
             vm.RFC = "";
             return View(vm);
         }
-        [HttpPost]
+        [HttpPost("/Responsable/AgregarJugador")]
         public IActionResult AgregarJugador(AgregarJugadorViewModel jugadorvm)
         {
             if (jugadorvm.Jugador.Nombre != null)
