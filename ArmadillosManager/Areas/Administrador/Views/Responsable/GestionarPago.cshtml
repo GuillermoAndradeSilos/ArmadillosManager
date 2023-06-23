@@ -3,92 +3,98 @@
 @{
     Layout = "_Layout";
 }
-<div class="contenido">
-    <form action="~/Responsable/GestionarPago" method="post">
-        <div class="header">
-            <!--Parte de Arriba-->
-            <h1>Informe de Pagos</h1>
-            <nav>
-                <div>
-                    <input type="submit" name="Filtros.Liga" asp-for="Filtros.Liga" value="Todos" />
-                    <input type="submit" name="Filtros.Liga" asp-for="Filtros.Liga" value="Infantil" />
-                    <input type="submit" name="Filtros.Liga" asp-for="Filtros.Liga" value="Juvenil" />
+
+
+
+    <div class="contenido">
+        <form action="~/Responsable/GestionarPago" method="post">
+            <div class="header">
+                <!--Parte de Arriba-->
+                <h1>Informe de Pagos</h1>
+                <nav>
+                    <div>
+                        <input type="submit" name="Filtros.Liga" asp-for="Filtros.Liga" value="Todos" />
+                        <input type="submit" name="Filtros.Liga" asp-for="Filtros.Liga" value="Infantil" />
+                        <input type="submit" name="Filtros.Liga" asp-for="Filtros.Liga" value="Juvenil" />
+                    </div>
+                </nav>
+            </div>
+
+            <div class="filtros">
+                <!--Filtros-->
+                <input class="textbox" placeholder="Buscar"></input>
+                <div class="contenedorfiltro">
+                    <h3>Mostrar por Categoria</h3>
+                    <select id="cmbCategoria" asp-for="Filtros.Categoria" asp-items="@(new SelectList(Model.Categorias,"IdCategoria","Categoria1"))"
+                            onchange="this.form.submit()">
+                        <option selected="selected" value="">Todos</option>
+                    </select>
                 </div>
-            </nav>
-        </div>
-
-        <div class="filtros">
-            <!--Filtros-->
-            <input class="textbox" placeholder="Buscar"></input>
-            <div class="contenedorfiltro">
-                <h3>Mostrar por Categoria</h3>
-                <select id="cmbCategoria" asp-for="Filtros.Categoria" asp-items="@(new SelectList(Model.Categorias,"IdCategoria","Categoria1"))"
-                    onchange="this.form.submit()">
-                    <option selected="selected" value="">Todos</option>
-                </select>
+                <div class="contenedorfiltro">
+                    <h3>Mostrar por Estado</h3>
+                    <select id="cmdEstado" asp-for="Filtros.Estado" onchange="this.form.submit()">
+                        <option>Todos</option>
+                        <option>Pendiente</option>
+                        <option>Pagado</option>
+                    </select>
+                </div>
+                <button class="imprentbtn">
+                    <i class="fa-sharp fa-solid fa-print"></i>
+                </button>
             </div>
-            <div class="contenedorfiltro">
-                <h3>Mostrar por Estado</h3>
-                <select id="cmdEstado" asp-for="Filtros.Estado" onchange="this.form.submit()">
-                    <option>Todos</option>
-                    <option>Pendiente</option>
-                    <option>Pagado</option>
-                </select>
-            </div>
-            <button class="imprentbtn">
-                <i class="fa-sharp fa-solid fa-print"></i>
-            </button>
-        </div>
-    </form>
-    <div class="tablacontainer">
-        <!--Tabla-->
-        <h2>Estado de Pago de los Jugadores</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Jugador</th>
-                    <th>Categoria</th>
-                    <th>Responsable</th>
-                    <th>Estado</th>
-                    <th>*</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model.Pagos != null)
-                    @foreach (var item in Model.Pagos)
-                    {
-                        <tr>
-                            <td>@item.Id</td>
-                            <td>
-                                <h4>@item.IdJugadorNavigation.Nombre</h4>
-                                <ul>
-                                    <li>@item.IdJugadorNavigation.Direccion</li>
-                                    <li>@item.IdJugadorNavigation.Telefono</li>
-                                </ul>
-                            </td>
-                            <td>@item.IdJugadorNavigation.CategoriaNavigation.Categoria1</td>
-                            <td>@item.IdResponsableNavigation.Nombre</td>
-                            <td>@item.Estado</td>
-                            <td>
-                                <div class="gestionDad">
-                                    <div class="mascara">
-                                        <i class="fa-sharp fa-solid fa-ellipsis-vertical"></i>
+        </form>
+        <div class="tablacontainer">
+            <!--Tabla-->
+            <h2>Estado de Pago de los Jugadores</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Jugador</th>
+                        <th>Categoria</th>
+                        <th>Responsable</th>
+                        <th>Estado</th>
+                        <th>*</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Pagos != null)
+                        @foreach (var item in Model.Pagos)
+                        {
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>
+                                    <h4>@item.IdJugadorNavigation.Nombre</h4>
+                                    <ul>
+                                        <li>@item.IdJugadorNavigation.Direccion</li>
+                                        <li>@item.IdJugadorNavigation.Telefono</li>
+                                    </ul>
+                                </td>
+                                <td>@item.IdJugadorNavigation.CategoriaNavigation.Categoria1</td>
+                                <td>@item.IdResponsableNavigation.Nombre</td>
+                                <td>@item.Estado</td>
+                                <td>
+                                    <div class="gestionDad">
+                                        <div class="mascara">
+                                            <i class="fa-sharp fa-solid fa-ellipsis-vertical"></i>
+                                        </div>
+                                        <div class="opcionesGestion">
+                                            <a>
+                                                <i class="fa-solid fa-eye"></i>
+                                            </a>
+                                            <a>
+                                                <i class="fa-sharp fa-solid fa-trash"></i>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <div class="opcionesGestion">
-                                        <a>
-                                            <i class="fa-solid fa-eye"></i>
-                                        </a>
-                                        <a>
-                                            <i class="fa-sharp fa-solid fa-trash"></i>
-                                        </a>
-                                    </div>
-                                </div>
 
-                            </td>
-                        </tr>
-                    }
-            </tbody>
-        </table>
+                                </td>
+                            </tr>
+                        }
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
+
+
+

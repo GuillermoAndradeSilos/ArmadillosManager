@@ -3,7 +3,7 @@
 @{
     Layout = "_Layout";
 }
-<body>
+
     <div class="contenido">
         <form action="~/GestionarJugadores" method="post">
             <div class="header">
@@ -61,8 +61,8 @@
                             <td>
                                 <div class="gestionDad">
                                     @*<div class="mascara">
-                                        <i class="fa-sharp fa-solid fa-ellipsis-vertical"></i>
-                                    </div>*@
+                                <i class="fa-sharp fa-solid fa-ellipsis-vertical"></i>
+                                </div>*@
                                     <div class="opcionesGestion">
                                         <i class="fa-sharp fa-solid fa-trash"></i>
                                         <a href="~/Responsable/EditarJugador/@(item.Id)"><i class="fa-solid fa-eye"></i></a>
@@ -76,7 +76,10 @@
             </table>
         </div>
     </div>
-</body>
+
+
+
+
 <script>
     var rfcList = @Html.Raw(Json.Serialize(Model.Jugadores.ToList()));
     function searchNames() {

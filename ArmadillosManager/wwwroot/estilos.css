@@ -26,6 +26,12 @@ header h2
     color: white;
 }
 
+body
+{
+    margin: 0;
+    height: 100vh;
+}
+
 .divusuario
 {
     margin: auto 4vw;
@@ -37,14 +43,14 @@ header h2
     color: white;
 }
 
-body {
+.divAdmin {
     height: 100%;
     margin: 0;
     display: grid;
     grid-template-columns: 1fr 5fr;
 }
 
-.bodyResp
+.divResp
 {
     padding-top: 10vh;
     height: 100%;
@@ -52,7 +58,7 @@ body {
     margin: 0;
 }
 
-.bodyLogin h1{
+.divLogin h1{
     margin: 0;
     font-size: xx-large;
     font-family: 'Segoe UI';
@@ -60,7 +66,7 @@ body {
     text-transform: uppercase;
 }
 
-.bodyLogin label {
+.divLogin label {
     margin: 10px 0;
     font-family: 'Segoe UI';
     font-weight: lighter;
