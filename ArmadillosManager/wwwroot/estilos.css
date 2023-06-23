@@ -38,7 +38,7 @@ header h2
 }
 
 body {
-    height: 100vh;
+    height: 100%;
     margin: 0;
     display: grid;
     grid-template-columns: 1fr 5fr;
