@@ -2,16 +2,31 @@
 @model ArmadillosManager.Models.Login
 @{
 }
-<body>
-    <h1>Iniciar Sesión</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/9c74a791f2.js" crossorigin="anonymous"></script>
+    <link href="~/estilos.css" rel="stylesheet" />
+    <title>Gestion de los Jugadores</title>
+</head>
+<body class="BodyLogin">
 
-    <form method="post" action="~/login/IniciarSesion">
-        <label>Usuario:</label>
-        <input id="txtUserName" type="text" asp-for="UserName" /><br />
-        <label>Contraseña:</label>
-        <input id="txtPassword" type="text" asp-for="Password" />
-        <br />
-        @Html.ValidationSummary()
-        <input type="submit" value="Ingresar" />
-    </form>
+    <div>
+        <div>
+
+            <h1>Iniciar Sesión</h1>
+
+            <form method="post" action="~/login/IniciarSesion">
+                <label>Usuario:</label>
+                <input id="txtUserName" type="text" asp-for="UserName" /><br />
+                <label>Contraseña:</label>
+                <input id="txtPassword" type="text" asp-for="Password" />
+                <br />
+                @Html.ValidationSummary()
+                <input type="submit" value="Ingresar" />
+            </form>
+        </div>
+    </div>
+   
 </body>
