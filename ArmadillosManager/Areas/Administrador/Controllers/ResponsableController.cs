@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using System.Linq;
 
 namespace ArmadillosManager.Areas.Administrador.Controllers
 {
@@ -61,6 +62,7 @@ namespace ArmadillosManager.Areas.Administrador.Controllers
             ViewBag.Seleccion = 2;
             return View(v);
         }
+        [HttpGet("/Responsable/AgregarResponsable")]
         public IActionResult AgregarResponsable()
         {
             AgregarResponsableViewModel vm = new AgregarResponsableViewModel();
@@ -74,7 +76,7 @@ namespace ArmadillosManager.Areas.Administrador.Controllers
             });
             return View(vm);
         }
-        [HttpPost]
+        [HttpPost("/Responsable/AgregarResponsable")]
         public IActionResult AgregarResponsable(AgregarResponsableViewModel responsablevm)
         {
             if (responsablevm.Responsable != null)
@@ -85,10 +87,11 @@ namespace ArmadillosManager.Areas.Administrador.Controllers
                     ModelState.AddModelError("", "Favor de escribir el nombre del responsable");
                     errores++;
                 }
+                responsablevm.Responsable.Contraseña = "EquipoArmadillos";
                 if (errores <= 0)
                     repositoryResponsable.Insert(responsablevm.Responsable);
 
-                return RedirectToAction("GestionarJugadores");
+                return RedirectToAction("GestionarResponsable");
             }
             return View(responsablevm);
         }
@@ -98,7 +101,8 @@ namespace ArmadillosManager.Areas.Administrador.Controllers
             AgregarJugadorViewModel vm = new AgregarJugadorViewModel();
             vm.Categorias = context.Categoria.OrderBy(x => x.Categoria1);
             vm.Ligas = context.Liga.OrderBy(x => x.Liga1);
-            vm.Responsables = context.Responsable.OrderBy(x => x.Nombre);
+            vm.Responsables = context.Responsable.OrderBy(x => x.Nombre).Select(x => new Responsable() { Rfc = x.Rfc });
+            vm.RFCS = context.Responsable.OrderBy(x => x.Nombre).Select(x => x.Rfc).ToList();
             vm.RFC = "";
             return View(vm);
         }
@@ -139,7 +143,7 @@ namespace ArmadillosManager.Areas.Administrador.Controllers
             ViewBag.Seleccion = 0;
             return View(v);
         }
-        [HttpPost]
+        [HttpPost("/GestionarPago")]
         public IActionResult GestionarPago(GestionarPagoViewModel pagovm)
         {
             GestionarPagoViewModel v = new GestionarPagoViewModel();
@@ -175,7 +179,7 @@ namespace ArmadillosManager.Areas.Administrador.Controllers
             ViewBag.Seleccion = 3;
             return View(vm);
         }
-        [HttpPost]
+        [HttpPost("/Responsable/GestionarTemporada")]
         public IActionResult GestionarTemporada(GestionarTemporadaViewModel temp)
         {
             if (string.IsNullOrWhiteSpace(temp.Temporada.CostoTemporadaJuvenil.ToString()))
@@ -190,13 +194,14 @@ namespace ArmadillosManager.Areas.Administrador.Controllers
                 ModelState.AddModelError("", "La fecha de inicio no puede ser la misma que la fecha final");
             if (DateOnly.Parse(temp.InicioLigaJuvenilFormateada) >= DateOnly.Parse(temp.FinalLigaJuvenilFormateada) || DateOnly.Parse(temp.InicioLigaJuvenilFormateada) <= DateOnly.FromDateTime(DateTime.UtcNow))
                 ModelState.AddModelError("", "La fecha de inicio no puede ser la misma que la fecha final");
-            temp.Temporada.InicioLigaInfantil = DateOnly.ParseExact(temp.InicioLigaJuvenilFormateada, "dd-MM-YYYY");
-            temp.Temporada.FinalLigaInfantil = DateOnly.ParseExact(temp.FinalLigaInfantilFormateada, "dd-MM-YYYY");
-            temp.Temporada.InicioLigaJuvenil = DateOnly.ParseExact(temp.InicioLigaJuvenilFormateada, "dd-MM-YYYY");
-            temp.Temporada.FinalLigaJuvenil = DateOnly.ParseExact(temp.FinalLigaJuvenilFormateada, "dd-MM-YYYY");
+            temp.Temporada.InicioLigaInfantil = DateOnly.Parse(temp.InicioLigaJuvenilFormateada);
+            temp.Temporada.FinalLigaInfantil = DateOnly.Parse(temp.FinalLigaJuvenilFormateada);
+            temp.Temporada.InicioLigaJuvenil = DateOnly.Parse(temp.InicioLigaInfantilFormateada);
+            temp.Temporada.FinalLigaJuvenil = DateOnly.Parse(temp.FinalLigaInfantilFormateada);
             repositoryTemporada.Insert(temp.Temporada);
-            return Ok();
+            return RedirectToAction("GestionarJugadores");
         }
+        [HttpGet("Responsable/EditarResponsable/{id}")]
         public IActionResult EditarResponsable(int id)
         {
             var a = repositoryResponsable.GetById(id);
@@ -213,7 +218,7 @@ namespace ArmadillosManager.Areas.Administrador.Controllers
             };
             return View(vm);
         }
-        [HttpPost("/EditarResponsable")]
+        [HttpPost("Responsable/EditarResponsable")]
         public IActionResult EditarResponsable(AgregarResponsableViewModel res)
         {
             var a = repositoryResponsable.GetAll().Where(x => x.Nombre == res.Responsable.Nombre).FirstOrDefault();
@@ -224,8 +229,9 @@ namespace ArmadillosManager.Areas.Administrador.Controllers
             a.Correo = res.Responsable.Correo;
             a.Direccion = res.Responsable.Direccion;
             repositoryResponsable.Update(a);
-            return Ok();
+            return RedirectToAction("GestionarResponsable");
         }
+        [HttpGet("Responsable/EditarJugador/{id}")]
         public IActionResult EditarJugador(int id)
         {
             var a = repositoryJugador.GetById(id);
@@ -236,11 +242,12 @@ namespace ArmadillosManager.Areas.Administrador.Controllers
             vm.Categorias = context.Categoria.OrderBy(x => x.Categoria1);
             vm.Ligas = context.Liga.OrderBy(x => x.Liga1);
             vm.Responsables = context.Responsable.OrderBy(x => x.Nombre);
+            vm.RFCS = context.Responsable.OrderBy(x => x.Nombre).Select(x => x.Rfc).ToList();
             if (!string.IsNullOrWhiteSpace(a.IdResponsable.ToString()))
                 vm.RFC = repositoryResponsable.GetAll().Where(x => x.Id == a.IdResponsable).Select(x => x.Rfc).FirstOrDefault();
             return View(vm);
         }
-        [HttpPost("/EditarJugador")]
+        [HttpPost("Responsable/EditarJugador")]
         public IActionResult EditarJugador(AgregarJugadorViewModel juga)
         {
             var a = repositoryJugador.GetAll().Where(x => x.Nombre == juga.Jugador.Nombre).FirstOrDefault();
@@ -255,55 +262,9 @@ namespace ArmadillosManager.Areas.Administrador.Controllers
             a.Categoria = juga.Jugador.Categoria;
             a.Liga = juga.Jugador.Liga;
             repositoryJugador.Update(a);
-            return Ok();
+            return RedirectToAction("GestionarJugadores");
         }
 
-        /*                                              Gracias BING
-         Aquí hay un ejemplo de cómo puedes crear un filtro de búsqueda en tiempo real con React y JavaScript:
 
-import React, { useState } from 'react';
-
-function SearchFilter() {
-  const [filter, setFilter] = useState('');
-  const data = [
-    { name: 'Juan' },
-    { name: 'Pedro' },
-    { name: 'Ana' },
-    // ...
-  ];
-
-  const filteredData = data.filter(item => item.name.includes(filter));
-
-  return (
-    <>
-      <input
-        type="text"
-        placeholder="Buscar..."
-        onChange={e => setFilter(e.target.value)}
-      />
-      <table>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredData.map(item => (
-            <tr key={item.name}>
-              <td>{item.name}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </>
-  );
-}
-En este ejemplo, usamos el estado filter para almacenar el valor del filtro y el método setFilter para actualizarlo. 
-        Cada vez que el usuario escribe en el elemento de entrada, el evento onChange se activa y actualiza el estado del 
-        filtro con el valor actual del elemento de entrada.
-
-Luego usamos el método filter de JavaScript para filtrar los datos de la tabla en función del valor del filtro. 
-        Finalmente, mostramos los datos filtrados en la tabla.
-         */
     }
 }

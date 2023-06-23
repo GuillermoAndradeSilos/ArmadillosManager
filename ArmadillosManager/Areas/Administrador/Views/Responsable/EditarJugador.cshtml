@@ -15,36 +15,9 @@
         </div>
 
         <!--Info-->
-        @*<h2>Patrocinador</h2>
-        <table>
-        <tr>
-        <th>Id</th>
-        <th>Responsable</th>
-        <th>RFC</th>
-        <th>Correo Electronico</th>
-        <th>*</th>
-        </tr>
-        @foreach (var item in Model.Responsables)
-        {
-        <tr>
-        <td>@item.Id</td>
-        <td>
-        <h6>@item.Nombre</h6>
-        <ul>
-        <li>@item.Direccion</li>
-        <li>@item.Telefono</li>
-        </ul>
-        </td>
-        <td>@item.Rfc</td>
-        <td>@item.Correo</td>
-        <td><Button>Gestionar</Button></td>
-        </tr>
-        }
-        </table>
-        <hr />*@
         <div class="infocontainer">
             <h2>Datos del Jugador</h2>
-            <form method="post" action="~/EditarJugador">
+            <form method="post" action="~/Responsable/EditarJugador">
                 <h3>Nombre</h3>
                 <input type="text" id="txtNombre" required="required" asp-for="Jugador.Nombre">
                 <div class="divv">
@@ -65,24 +38,15 @@
                 <input type="text" id="txtDomicilio" required="required" asp-for="Jugador.Direccion" />
                 <h3>telefono</h3>
                 <input type="text" id="txtTelefono" required="required" asp-for="Jugador.Telefono" />
-                <h3>Patrocinador</h3>
-                <input name="txtRFC" type="text" id="txtRFC" required="required" asp-for="RFC" />
-                @*<div id="autocomplete"></div>
-
-                <script src="~/Views/LarvaScript.js"></script>
-                <script>
-                var nombres = @Html.Raw(JsonSerializer.Serialize(Model.Responsables));
-                ReactDOM.render(
-                React.createElement(Autocomplete, { suggestions: nombres }),
-                document.getElementById('autocomplete')
-                );
-                </script>*@
+                <h3>RFC del patrocinador</h3>
+                <input type="text" id="txtRFC" onkeyup="searchNames()" asp-for="RFC" />
+                <div id="searchResults"></div>
                 <p id="error">
                     @Html.ValidationSummary()
                 </p>
                 <div class="btncontainer">
-                    <input class="addbtn" href="~/" type="submit" value="Enviar" />
-                    <button formnovalidate href="~/" class="imprentbtn">
+                    <input type="submit" class="addbtn" href="~/GestionarJugadores" value="Enviar" />
+                    <button id="btnTest" type="submit" href="~/GestionarJugadores" class="imprentbtn">
                         <i class="fa-sharp fa-solid fa-xmark"></i>
                     </button>
                 </div>
@@ -90,3 +54,35 @@
         </div>
     </div>
 </body>
+<script>
+    var rfcList = @Html.Raw(Json.Serialize(Model.RFCS));
+
+    function searchNames() {
+        var input = document.getElementById("txtRFC").value;
+        var matchingRFCs = rfcList.filter(function (rfc) {
+            return rfc.toLowerCase().includes(input.toLowerCase());
+        });
+        console.log(matchingRFCs);
+        displayResults(matchingRFCs);
+    }
+    function displayResults(results) {
+        var rfcResults = document.getElementById("searchResults");
+        rfcResults.innerHTML = "";
+        if (results.length > 0)
+            results.forEach(function (result) {
+                var html = "";
+                console.log(result);
+                results.forEach(function (result) {
+                    html += "<p>" + result + "</p>";
+                });
+                rfcResults.innerHTML = html;
+            });
+        else
+            rfcResults.innerHTML = "<p>No se encontraron RFC similares.</p>";
+    }
+</script>
+<script>
+    document.getElementById("btnTest").addEventListener("click", function () {
+        window.location.href = "~/Responsable/GestionarJugadores";
+    });
+</script>

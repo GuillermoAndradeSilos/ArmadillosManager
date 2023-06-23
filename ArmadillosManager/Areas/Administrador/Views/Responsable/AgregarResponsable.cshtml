@@ -28,42 +28,23 @@
                     <input type="tel" required="required" id="txtTelefono" asp-for="Responsable.Telefono">
                     <h3>Domicilio</h3>
                     <input type="text" required="required" id="txtCorreo" asp-for="Responsable.Direccion">
-                    <h3>Contraseña????</h3>
-                    <input type="password" required="required" id="txtCorreo" asp-for="Responsable.Contraseña">
-
                     <p id="error">
                         @Html.ValidationSummary()
                     </p>
                     <div class="btncontainer">
                         <button href="~/GestionarResponsable" class="addbtn">Aceptar</button>
-                        <button formnovalidate href="~/" class="imprentbtn">
+                        <button id="btnTest" formnovalidate href="~/GestionarResponsable" class="imprentbtn">
                             <i class="fa-sharp fa-solid fa-xmark"></i>
                         </button>
                     </div>
                 </form>
             </div>
             <hr>
-
-            @*<h2>Jugadores</h2>
-            <table>
-                <tr>
-                    <th>Jugador</th>
-                    <th>Categoria</th>
-                    <th>Liga</th>
-                    <th>*</th>
-                </tr>
-                @foreach (var item in Model.Jugadores)
-                {
-                    <tr>
-                        <td>
-                            <h4>@item.Nombre</h4>
-                        </td>
-                        <td>@item.CategoriaNavigation.Categoria1</td>
-                        <td>@item.LigaNavigation.Liga1</td>
-                        <td><Button>Gestionar</Button></td>
-                    </tr>
-                }
-            </table>*@
         </div>
     </div>
 </body>
+<script>
+    document.getElementById("btnTest").addEventListener("click", function () {
+        window.location.href = "/GestionarResponsable";
+    });
+</script>

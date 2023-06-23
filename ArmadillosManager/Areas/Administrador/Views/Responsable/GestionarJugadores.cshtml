@@ -20,7 +20,8 @@
             </div>
             <div class="filtros">
                 <!--Filtros-->
-                <input class="textbox" placeholder="Buscar"></input>
+                <input id="txtBuscar" class="textbox" placeholder="Buscar" onkeyup="searchNames()"></input>
+                <div id="searchResults"></div>
                 <div class="contenedorfiltro">
                     <h3>Mostrar por Categoria</h3>
                     <select id="cmbCategoria" asp-for="Filtros.Categoria" asp-items="@(new SelectList(Model.Categorias,"IdCategoria","Categoria1"))"
@@ -76,3 +77,31 @@
         </div>
     </div>
 </body>
+<script>
+    var rfcList = @Html.Raw(Json.Serialize(Model.Jugadores.ToList()));
+    function searchNames() {
+        var input = document.getElementById("txtBuscar").value;
+        var matchingRFCs = rfcList.filter(function (rfc) 
+        {
+            return rfc.toLowerCase().includes(input.toLowerCase());
+        });
+        console.log(matchingRFCs);
+        displayResults(matchingRFCs);
+    }
+    function displayResults(results) {
+        var rfcResults = document.getElementById("searchResults");
+        rfcResults.innerHTML = "";
+        if (results.length > 0)
+            results.forEach(function (result) 
+            {
+                var html = "";
+                console.log(result);
+                results.forEach(function (result) {
+                    html += "<p>" + result + "</p>";
+                });
+                rfcResults.innerHTML = html;
+            });
+        else
+            rfcResults.innerHTML = "<p>No se encontraron RFC similares.</p>";
+    }
+</script>

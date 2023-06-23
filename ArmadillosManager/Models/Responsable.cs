@@ -17,7 +17,7 @@ public partial class Responsable
 
     public string Direccion { get; set; } = null!;
 
-    public string Contraseña { get; set; } = null!;
+    public string? Contraseña { get; set; }
 
     public virtual ICollection<Jugador> Jugador { get; } = new List<Jugador>();
 
