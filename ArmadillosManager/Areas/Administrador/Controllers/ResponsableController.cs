@@ -178,7 +178,7 @@ namespace ArmadillosManager.Areas.Administrador.Controllers
             vm.FinalLigaInfantilFormateada = vm.Temporada.FinalLigaInfantil.ToString("yyyy-MM-dd");
             ViewBag.Seleccion = 3;
             return View(vm);
-        }
+        } 
         [HttpPost("/Responsable/GestionarTemporada")]
         public IActionResult GestionarTemporada(GestionarTemporadaViewModel temp)
         {
