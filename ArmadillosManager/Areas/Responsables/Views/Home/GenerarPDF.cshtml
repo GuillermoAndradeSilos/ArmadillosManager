@@ -1,0 +1,62 @@
+﻿@model ArmadillosManager.Areas.Responsables.Models.GenerarPDFModel
+@{
+
+}
+<html>
+<head>
+    <title>PDF - Vista previa</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/9c74a791f2.js" crossorigin="anonymous"></script>
+    <link href="~/estilos.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <button id="btnImprimir" onclick="ocultar()">Imprimir</button>
+    <div class="tablacontainer">
+        <table>
+            <thead>
+                <tr>
+                    <th>Jugador</th>
+                    <th>Categoria</th>
+                    <th>Tipo</th>
+                    <th>Cantidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Movimientos)
+                {
+                    <tr>
+                        <td>
+                            <h4>@item.JugadorHelp.Nombre</h4>
+                            <ul>
+                                <li>@item.JugadorHelp.Direccion</li>
+                                <li>@item.JugadorHelp.Telefono</li>
+                            </ul>
+                        </td>
+                        <td>@item.JugadorHelp.CategoriaNavigation.Categoria1</td>
+                        <td>@item.MovimientoHelp.Concepto</td>
+                        <td>@item.MovimientoHelp.Monto</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <script>
+        let btn = document.getElementById("btnImprimir");
+        function ocultar(){
+            btn.style.display = "none";
+            window.print();
+            btn.style.display = "block";
+        }
+        window.addEventListener("keydown", function (event) {
+            if (event.ctrlKey && event.key === "p") {
+                event.preventDefault();
+                btn.style.display = "none";
+                window.print();
+                btn.style.display = "block";
+            }
+        });
+    </script>
+</body>
+</html>

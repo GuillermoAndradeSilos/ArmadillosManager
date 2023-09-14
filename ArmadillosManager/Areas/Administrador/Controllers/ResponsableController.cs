@@ -167,6 +167,7 @@ namespace ArmadillosManager.Areas.Administrador.Controllers
             v.Categorias = context.Categoria.OrderBy(x => x.Categoria1);
             return View(v);
         }
+        /*Agregar la funcion de agregar pago/cargo, mich DAME LA VISTAAAAAAAAAAa*/
         [HttpGet("/GestionarTemporada")]
         public IActionResult GestionarTemporada()
         {
@@ -264,7 +265,5 @@ namespace ArmadillosManager.Areas.Administrador.Controllers
             repositoryJugador.Update(a);
             return RedirectToAction("GestionarJugadores");
         }
-
-
     }
 }

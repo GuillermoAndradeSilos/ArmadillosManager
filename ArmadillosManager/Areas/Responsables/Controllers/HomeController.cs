@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using ArmadillosManager.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using IronPdf;
+using ArmadillosManager.Areas.Responsables.Models;
 
 namespace ArmadillosManager.Areas.Responsables.Controllers
 {
@@ -44,7 +46,7 @@ namespace ArmadillosManager.Areas.Responsables.Controllers
                     .Select(x => new ResponsableHelpViewModel
                     {
                         MovimientoHelp = new Movimientos { Concepto = x.Concepto, Monto = x.Monto },
-                        JugadorHelp = new Jugador { Nombre = x.IdPagoNavigation.IdJugadorNavigation.Nombre, Direccion = x.IdPagoNavigation.IdJugadorNavigation.Direccion, Telefono = x.IdPagoNavigation.IdJugadorNavigation.Telefono }
+                        JugadorHelp = new Jugador { Id = x.Id, CategoriaNavigation = x.IdPagoNavigation.IdJugadorNavigation.CategoriaNavigation, Nombre = x.IdPagoNavigation.IdJugadorNavigation.Nombre, Direccion = x.IdPagoNavigation.IdJugadorNavigation.Direccion, Telefono = x.IdPagoNavigation.IdJugadorNavigation.Telefono }
                     });
                 return View(vm);
             }
@@ -92,6 +94,20 @@ namespace ArmadillosManager.Areas.Responsables.Controllers
             a.Liga = juga.Jugador.Liga;
             repositoryJugador.Update(a);
             return Ok();
+        }
+        [HttpGet("/GenerarPDF/{id}")]
+        public IActionResult GenerarPDF(int id)
+        {
+            var jugador = repositoryJugador.GetById(id);
+            GenerarPDFModel vm = new GenerarPDFModel();
+            vm.Movimientos = context.Movimientos.Include(x => x.IdPagoNavigation).Include(x => x.IdPagoNavigation.IdResponsableNavigation)
+                    .Where(x => x.IdPagoNavigation.IdResponsableNavigation.Id == jugador.IdResponsable)
+                    .Select(x => new ResponsableHelpViewModel
+                    {
+                        MovimientoHelp = new Movimientos { Concepto = x.Concepto, Monto = x.Monto },
+                        JugadorHelp = new Jugador { Id = x.Id, CategoriaNavigation = x.IdPagoNavigation.IdJugadorNavigation.CategoriaNavigation, Nombre = x.IdPagoNavigation.IdJugadorNavigation.Nombre, Direccion = x.IdPagoNavigation.IdJugadorNavigation.Direccion, Telefono = x.IdPagoNavigation.IdJugadorNavigation.Telefono }
+                    });
+            return View(vm);
         }
     }
 }

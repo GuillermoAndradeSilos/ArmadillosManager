@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="IronPdf" Version="2023.8.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Pomelo.EntityFrameworkCore.Mysql" Version="7.0.0" />
+    <PackageReference Include="Select.HtmlToPdf" Version="23.1.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Administrador\Models\" />
-    <Folder Include="Areas\Responsables\Models\" />
   </ItemGroup>
 
 </Project>
