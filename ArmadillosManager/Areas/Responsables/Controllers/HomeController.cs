@@ -38,10 +38,14 @@ namespace ArmadillosManager.Areas.Responsables.Controllers
                 ResponsableViewModel vm = new ResponsableViewModel();
                 vm.ResponsableInfo = new Responsable();
                 vm.Jugadores = repositoryJugador.GetAll().Include(x => x.CategoriaNavigation).Where(x => x.IdResponsableNavigation.Correo == test);
-                vm.ResponsableInfo.Nombre = repositoryResponsable.GetAll().Where(x => x.Correo.ToLower() == test).Select(x => x.Nombre).FirstOrDefault();
-                vm.ResponsableInfo.Direccion = repositoryResponsable.GetAll().Where(x => x.Correo.ToLower() == test).Select(x => x.Direccion).FirstOrDefault();
-                vm.ResponsableInfo.Telefono = repositoryResponsable.GetAll().Where(x => x.Correo == test).Select(x => x.Telefono).FirstOrDefault();
-                vm.Movimientos = context.Movimientos.Include(x => x.IdPagoNavigation).Include(x => x.IdPagoNavigation.IdResponsableNavigation)
+                vm.ResponsableInfo.Nombre = repositoryResponsable.GetAll().Where(x => x.Correo.ToLower() == test)
+                    .Select(x => x.Nombre).FirstOrDefault();
+                vm.ResponsableInfo.Direccion = repositoryResponsable.GetAll().Where(x => x.Correo.ToLower() == test)
+                    .Select(x => x.Direccion).FirstOrDefault();
+                vm.ResponsableInfo.Telefono = repositoryResponsable.GetAll().Where(x => x.Correo == test).Select(x => x.Telefono).
+                    FirstOrDefault();
+                vm.Movimientos = context.Movimientos.Include(x => x.IdPagoNavigation)
+                    .Include(x => x.IdPagoNavigation.IdResponsableNavigation)
                     .Where(x => x.IdPagoNavigation.IdResponsableNavigation.Nombre == vm.ResponsableInfo.Nombre)
                     .Select(x => new ResponsableHelpViewModel
                     {
@@ -59,6 +63,7 @@ namespace ArmadillosManager.Areas.Responsables.Controllers
             var jugadoresresponsable = repositoryJugador.GetAll().Where(x => x.IdResponsableNavigation.Nombre == responsable.Nombre);
             return Ok(jugadoresresponsable);
         }
+
         [HttpGet("/EditarJugador/Jugador/{id}")]
         public IActionResult EditarJugador(int id)
         {
@@ -79,9 +84,11 @@ namespace ArmadillosManager.Areas.Responsables.Controllers
         [HttpPost("/Home/EditarJugador")]
         public IActionResult EditarJugador(AgregarJugadorViewModel juga)
         {
-            var a = repositoryJugador.GetAll().Include(x => x.IdResponsableNavigation).Where(x => x.Nombre == juga.Jugador.Nombre).FirstOrDefault();
+            var a = repositoryJugador.GetAll().Include(x => x.IdResponsableNavigation).Where(x => x.Nombre == juga.Jugador.Nombre)
+                .FirstOrDefault();
             if (a == null)
-                return NotFound("El jugador que buscas editar puede que haya sido eliminado/dado de baja por el admnistrador, favor de comunicarse al local");
+                return NotFound("El jugador que buscas editar puede que haya sido eliminado/dado de baja por el admnistrador, " +
+                    "favor de comunicarse al local");
             if (a.IdResponsableNavigation.Correo != HttpContext.Session.GetString("NombreResponsable"))
                 return RedirectToAction("GestionarPrincipal");
             if (!string.IsNullOrWhiteSpace(juga.RFC))
@@ -108,6 +115,26 @@ namespace ArmadillosManager.Areas.Responsables.Controllers
                         JugadorHelp = new Jugador { Id = x.Id, CategoriaNavigation = x.IdPagoNavigation.IdJugadorNavigation.CategoriaNavigation, Nombre = x.IdPagoNavigation.IdJugadorNavigation.Nombre, Direccion = x.IdPagoNavigation.IdJugadorNavigation.Direccion, Telefono = x.IdPagoNavigation.IdJugadorNavigation.Telefono }
                     });
             return View(vm);
+        }
+        /*Nuevo show */
+        [HttpGet("/CambiarContraseña")]
+        public IActionResult NuevaContra(int id)
+        {
+            var responsable = repositoryResponsable.GetById(id);
+            NuevaContraViewModel vm = new NuevaContraViewModel() { IdResponsable = responsable.Id, NombreResponsable = responsable.Nombre, NuevaContra = "", ContraPasada = "" };
+            return View(vm);
+        }
+        [HttpPost("/CambiarContraseña")]
+        public IActionResult NuevaContra(NuevaContraViewModel vm)
+        {
+            var resp = repositoryResponsable.GetById(vm.IdResponsable);
+            if (resp.Contraseña == vm.ContraPasada)
+                return BadRequest("Contraseña incorrecta");
+            if (string.IsNullOrWhiteSpace(vm.NuevaContra))
+                return BadRequest("Favor de agregar la nueva contraseña");
+            resp.Contraseña = vm.NuevaContra;
+            repositoryResponsable.Update(resp);
+            return Ok();
         }
     }
 }

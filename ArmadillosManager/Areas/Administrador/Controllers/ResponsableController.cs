@@ -19,6 +19,7 @@ namespace ArmadillosManager.Areas.Administrador.Controllers
         private readonly Repository<Jugador> repositoryJugador;
         private readonly Repository<Temporada> repositoryTemporada;
         private readonly Repository<Pago> repositoryPago;
+        private readonly Repository<Movimientos> repositoryMovimientos;
 
         public ResponsableController(Sistem21ClubdeportivoContext cx)
         {
@@ -27,6 +28,7 @@ namespace ArmadillosManager.Areas.Administrador.Controllers
             repositoryJugador = new Repository<Jugador>(context);
             repositoryTemporada = new Repository<Temporada>(context);
             repositoryPago = new Repository<Pago>(context);
+            repositoryMovimientos = new Repository<Movimientos>(context);
         }
         [Route("/GestionarResponsable")]
         public IActionResult GestionarResponsable(GestionarResponsablesViewModel jugavm)
@@ -41,7 +43,8 @@ namespace ArmadillosManager.Areas.Administrador.Controllers
         public IActionResult GestionarJugadores(GestionarJugadoresViewModels jugavm)
         {
             GestionarJugadoresViewModels v = new GestionarJugadoresViewModels();
-            var vm = repositoryJugador.GetAll().Include(x => x.IdResponsableNavigation).Include(x => x.CategoriaNavigation).Include(x => x.LigaNavigation)
+            var vm = repositoryJugador.GetAll().Include(x => x.IdResponsableNavigation).Include(x => x.CategoriaNavigation)
+                .Include(x => x.LigaNavigation)
                 .Select(x => new Jugador
                 {
                     CategoriaNavigation = x.CategoriaNavigation,
@@ -120,7 +123,6 @@ namespace ArmadillosManager.Areas.Administrador.Controllers
                 jugadorvm.Jugador.IdResponsable = repositoryResponsable.GetAll().Where(x => x.Rfc.ToLower() == jugadorvm.RFC.ToLower()).Select(x => x.Id).FirstOrDefault();
                 if (errores <= 0)
                     repositoryJugador.Insert(jugadorvm.Jugador);
-
                 return RedirectToAction("GestionarJugadores");
             }
             return View(jugadorvm);
@@ -129,7 +131,8 @@ namespace ArmadillosManager.Areas.Administrador.Controllers
         public IActionResult GestionarPago()
         {
             GestionarPagoViewModel v = new GestionarPagoViewModel();
-            v.Pagos = repositoryPago.GetAll().Include(x => x.IdResponsableNavigation).Include(x => x.IdJugadorNavigation).Include(x => x.IdJugadorNavigation.CategoriaNavigation)
+            v.Pagos = repositoryPago.GetAll().Include(x => x.IdResponsableNavigation).Include(x => x.IdJugadorNavigation)
+                .Include(x => x.IdJugadorNavigation.CategoriaNavigation)
             .Select(x => new Pago
             {
                 Id = x.Id,
@@ -168,6 +171,47 @@ namespace ArmadillosManager.Areas.Administrador.Controllers
             return View(v);
         }
         /*Agregar la funcion de agregar pago/cargo, mich DAME LA VISTAAAAAAAAAAa*/
+        [HttpGet("/AgregarPago/Definir")]
+        public IActionResult AgregarPago()
+        {
+            AgregarPagoViewModel pagovm = new AgregarPagoViewModel();
+            pagovm.Pago = new Pago();
+            pagovm.Pago.Estado = "Pendiente";
+            return View(pagovm);
+        }
+        [HttpPost("/AgregarPago")]
+        public IActionResult AgregarPago(AgregarPagoViewModel pagovm)
+        {
+            var test = repositoryResponsable.GetById(pagovm.Pago.IdResponsable);
+            if (test == null)
+                return BadRequest("El id responsable no esta siendo traido.");//Esto no siquiera deberia de salir para el usuario
+            if (pagovm.Pago.MontoTotal == 0)
+                return BadRequest("Favor de agregar el monto total de este nuevo pago.");
+            if (string.IsNullOrWhiteSpace(pagovm.Pago.IdJugadorNavigation.Nombre))
+                return BadRequest("Favor de agregar el nombre del jugador.");
+            repositoryPago.Insert(pagovm.Pago);
+            return Ok();
+        }
+        [HttpGet("/AgregarMovimiento")]
+        public IActionResult MovimientosPago()
+        {
+            Movimientos movimientos = new Movimientos();
+            return View(movimientos);
+        }
+        [HttpPost("/AgregarMovimiento")]
+        public IActionResult MovimientosPago(Movimientos movimientos)
+        {
+            if (string.IsNullOrWhiteSpace(movimientos.Tipo))
+                return BadRequest("Favor de escribir el tipo de pago que es (Temporada/Uniforme).");
+            if (string.IsNullOrWhiteSpace(movimientos.Monto))
+                return BadRequest("Favor de escribir el monto.");
+            if (string.IsNullOrWhiteSpace(movimientos.Concepto))
+                return BadRequest("Favor de escribir el concepto.");
+            movimientos.Fecha = DateTime.UtcNow;
+            repositoryMovimientos.Insert(movimientos);
+            return Ok();
+        }
+        /*Aqui finaliza el nuevo show*/
         [HttpGet("/GestionarTemporada")]
         public IActionResult GestionarTemporada()
         {
@@ -179,7 +223,7 @@ namespace ArmadillosManager.Areas.Administrador.Controllers
             vm.FinalLigaInfantilFormateada = vm.Temporada.FinalLigaInfantil.ToString("yyyy-MM-dd");
             ViewBag.Seleccion = 3;
             return View(vm);
-        } 
+        }
         [HttpPost("/Responsable/GestionarTemporada")]
         public IActionResult GestionarTemporada(GestionarTemporadaViewModel temp)
         {
@@ -191,9 +235,11 @@ namespace ArmadillosManager.Areas.Administrador.Controllers
                 ModelState.AddModelError("", "El costo de la temporada Infantil no puede ser menor o igual a 0");
             if (temp.Temporada.CostoTemporadaInfantil <= 0)
                 ModelState.AddModelError("", "El costo de la temporada Infantil no puede ser menor o igual a 0");
-            if (DateOnly.Parse(temp.InicioLigaInfantilFormateada) >= DateOnly.Parse(temp.FinalLigaInfantilFormateada) || DateOnly.Parse(temp.InicioLigaInfantilFormateada) <= DateOnly.FromDateTime(DateTime.Now))
+            if (DateOnly.Parse(temp.InicioLigaInfantilFormateada) >= DateOnly.Parse(temp.FinalLigaInfantilFormateada)
+                || DateOnly.Parse(temp.InicioLigaInfantilFormateada) <= DateOnly.FromDateTime(DateTime.Now))
                 ModelState.AddModelError("", "La fecha de inicio no puede ser la misma que la fecha final");
-            if (DateOnly.Parse(temp.InicioLigaJuvenilFormateada) >= DateOnly.Parse(temp.FinalLigaJuvenilFormateada) || DateOnly.Parse(temp.InicioLigaJuvenilFormateada) <= DateOnly.FromDateTime(DateTime.UtcNow))
+            if (DateOnly.Parse(temp.InicioLigaJuvenilFormateada) >= DateOnly.Parse(temp.FinalLigaJuvenilFormateada)
+                || DateOnly.Parse(temp.InicioLigaJuvenilFormateada) <= DateOnly.FromDateTime(DateTime.UtcNow))
                 ModelState.AddModelError("", "La fecha de inicio no puede ser la misma que la fecha final");
             temp.Temporada.InicioLigaInfantil = DateOnly.Parse(temp.InicioLigaJuvenilFormateada);
             temp.Temporada.FinalLigaInfantil = DateOnly.Parse(temp.FinalLigaJuvenilFormateada);
